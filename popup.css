@@ -1,0 +1,404 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #ffffff;
+  width: 360px;
+  min-height: 500px;
+}
+
+.container {
+  padding: 16px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shield-icon {
+  font-size: 28px;
+}
+
+.logo h1 {
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.version {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+/* Status Section */
+.status-section {
+  margin-bottom: 20px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.inactive .status-dot {
+  background: #6b7280;
+  animation: none;
+}
+
+.status-indicator.warning .status-dot {
+  background: #f97316;
+}
+
+.status-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Stats Section */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-card.safe {
+  border-bottom: 3px solid #22c55e;
+}
+
+.stat-card.suspected {
+  border-bottom: 3px solid #f97316;
+}
+
+.stat-card.dangerous {
+  border-bottom: 3px solid #ef4444;
+}
+
+.stat-icon {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  display: block;
+}
+
+.stat-card.safe .stat-value {
+  color: #22c55e;
+}
+.stat-card.suspected .stat-value {
+  color: #f97316;
+}
+.stat-card.dangerous .stat-value {
+  color: #ef4444;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Score Section */
+.score-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.score-ring {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 12px;
+  position: relative;
+}
+
+.score-ring svg {
+  transform: rotate(-90deg);
+}
+
+.score-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+.score-progress {
+  fill: none;
+  stroke: url(#gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.score-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.score-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Email List Section */
+.email-list-section {
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.email-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.email-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.email-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.email-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.email-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 12px;
+  transition: background 0.2s;
+}
+
+.email-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.email-item:last-child {
+  border-bottom: none;
+}
+
+.email-score {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.email-score.safe {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+.email-score.suspected {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+}
+.email-score.dangerous {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.email-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.email-sender {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-subject {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Actions Section */
+.actions-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-icon {
+  font-size: 14px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer p {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Loading State */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading .btn-primary::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

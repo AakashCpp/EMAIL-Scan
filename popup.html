@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Security Scanner</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <span class="shield-icon">🛡️</span>
+          <h1>Email Scanner</h1>
+        </div>
+        <span class="version">v1.0</span>
+      </header>
+
+      <!-- Status Section -->
+      <section class="status-section" id="statusSection">
+        <div class="status-indicator" id="statusIndicator">
+          <div class="status-dot"></div>
+          <span class="status-text">Scanning...</span>
+        </div>
+      </section>
+
+      <!-- Statistics Cards -->
+      <section class="stats-section">
+        <div class="stat-card safe">
+          <div class="stat-icon">✓</div>
+          <div class="stat-info">
+            <span class="stat-value" id="safeCount">0</span>
+            <span class="stat-label">Safe</span>
+          </div>
+        </div>
+
+        <div class="stat-card suspected">
+          <div class="stat-icon">⚠</div>
+          <div class="stat-info">
+            <span class="stat-value" id="suspectedCount">0</span>
+            <span class="stat-label">Suspected</span>
+          </div>
+        </div>
+
+        <div class="stat-card dangerous">
+          <div class="stat-icon">✗</div>
+          <div class="stat-info">
+            <span class="stat-value" id="dangerousCount">0</span>
+            <span class="stat-label">Dangerous</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Average Score -->
+      <section class="score-section">
+        <div class="score-ring" id="scoreRing">
+          <svg viewBox="0 0 100 100">
+            <circle class="score-bg" cx="50" cy="50" r="45" />
+            <circle
+              class="score-progress"
+              cx="50"
+              cy="50"
+              r="45"
+              id="scoreProgress"
+            />
+          </svg>
+          <div class="score-value" id="averageScore">--</div>
+        </div>
+        <p class="score-label">Average Safety Score</p>
+      </section>
+
+      <!-- Email List -->
+      <section class="email-list-section">
+        <div class="section-header">
+          <h2>Scanned Emails</h2>
+          <span class="email-count" id="emailCount">0</span>
+        </div>
+
+        <div class="email-list" id="emailList">
+          <div class="empty-state" id="emptyState">
+            <span class="empty-icon">📭</span>
+            <p>No emails scanned yet</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <section class="actions-section">
+        <button class="btn btn-primary" id="rescanBtn">
+          <span class="btn-icon">🔄</span>
+          Rescan Emails
+        </button>
+        <button class="btn btn-secondary" id="settingsBtn">
+          <span class="btn-icon">⚙️</span>
+          Settings
+        </button>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>Powered by AI Threat Detection</p>
+      </footer>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

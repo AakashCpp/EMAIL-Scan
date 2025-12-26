@@ -1,0 +1,579 @@
+/* ==========================================
+   EMAIL SECURITY SCANNER - FLOATING PANEL
+   ========================================== */
+
+/* Floating Panel Container */
+.scanner-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 320px;
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scanner-panel.hidden {
+  display: none;
+}
+
+.scanner-panel.minimized {
+  width: 180px;
+}
+
+/* Panel Header */
+.scanner-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: grab;
+}
+
+.scanner-panel-header:active {
+  cursor: grabbing;
+}
+
+.scanner-panel-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scanner-shield {
+  font-size: 22px;
+}
+
+.scanner-title {
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.scanner-panel-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.scanner-btn-minimize,
+.scanner-btn-close {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.scanner-btn-minimize:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.scanner-btn-close:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* Panel Content */
+.scanner-panel-content {
+  padding: 16px;
+}
+
+.scanner-panel-content.hidden {
+  display: none;
+}
+
+/* Status Indicator */
+.scanner-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.scanner-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6b7280;
+}
+
+.scanner-status-dot.scanning {
+  background: #3b82f6;
+  animation: pulse 1.5s infinite;
+}
+
+.scanner-status-dot.safe {
+  background: #22c55e;
+}
+
+.scanner-status-dot.warning {
+  background: #f97316;
+}
+
+.scanner-status-dot.danger {
+  background: #ef4444;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.scanner-status-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Stats Grid */
+.scanner-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.scanner-stat {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.scanner-stat.safe {
+  border-bottom: 3px solid #22c55e;
+}
+.scanner-stat.suspected {
+  border-bottom: 3px solid #f97316;
+}
+.scanner-stat.dangerous {
+  border-bottom: 3px solid #ef4444;
+}
+
+.stat-number {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.scanner-stat.safe .stat-number {
+  color: #22c55e;
+}
+.scanner-stat.suspected .stat-number {
+  color: #f97316;
+}
+.scanner-stat.dangerous .stat-number {
+  color: #ef4444;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Score Circle */
+.scanner-score-container {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.scanner-score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s;
+}
+
+.scanner-score-circle.safe {
+  border-color: #22c55e;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+
+.scanner-score-circle.suspected {
+  border-color: #f97316;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+.scanner-score-circle.dangerous {
+  border-color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  animation: dangerPulse 1.5s infinite;
+}
+
+@keyframes dangerPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+  }
+}
+
+.scanner-score-value {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.scanner-score-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Email List Section */
+.scanner-email-section {
+  margin-bottom: 16px;
+}
+
+.scanner-email-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.scanner-email-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+.scanner-email-list {
+  max-height: 180px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.scanner-email-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scanner-email-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.scanner-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.scanner-empty span {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.scanner-empty p {
+  font-size: 12px;
+}
+
+/* Email Item */
+.scanner-email-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.scanner-email-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scanner-email-item:last-child {
+  border-bottom: none;
+}
+
+.email-score-badge {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.email-score-badge.safe {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.email-score-badge.suspected {
+  background: rgba(249, 115, 22, 0.2);
+  color: #f97316;
+}
+
+.email-score-badge.dangerous {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.email-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.email-sender {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-subject {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Actions */
+.scanner-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.scanner-btn-rescan {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scanner-btn-rescan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.scanner-btn-rescan:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Minimized View */
+.scanner-panel-minimized {
+  display: none;
+  padding: 12px 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.scanner-panel.minimized .scanner-panel-minimized {
+  display: flex;
+}
+
+.mini-shield {
+  font-size: 18px;
+}
+
+.mini-score {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mini-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6b7280;
+}
+
+.mini-status.safe {
+  background: #22c55e;
+}
+.mini-status.suspected {
+  background: #f97316;
+}
+.mini-status.dangerous {
+  background: #ef4444;
+  animation: pulse 1s infinite;
+}
+
+/* Toggle Button */
+.scanner-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999998;
+  transition: all 0.3s;
+}
+
+.scanner-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+.scanner-toggle.hidden {
+  display: none;
+}
+
+.toggle-icon {
+  font-size: 24px;
+}
+
+.toggle-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #6b7280;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+}
+
+.toggle-badge.alert {
+  background: #ef4444;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ==========================================
+   EMAIL ROW INDICATORS (existing styles)
+   ========================================== */
+
+.email-safe {
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.08) 0%,
+    transparent 100%
+  ) !important;
+}
+
+.email-suspected {
+  background: linear-gradient(
+    90deg,
+    rgba(249, 115, 22, 0.08) 0%,
+    transparent 100%
+  ) !important;
+}
+
+.email-dangerous {
+  background: linear-gradient(
+    90deg,
+    rgba(239, 68, 68, 0.12) 0%,
+    transparent 100%
+  ) !important;
+}
+
+.security-badge {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  animation: badgeFadeIn 0.3s ease;
+}
+
+.badge-icon {
+  font-size: 10px;
+}
+
+.badge-score {
+  font-size: 11px;
+}
+
+@keyframes badgeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+  .scanner-panel {
+    width: calc(100vw - 40px);
+    right: 20px;
+  }
+}
