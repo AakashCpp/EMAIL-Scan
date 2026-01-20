@@ -462,8 +462,8 @@ class EmailSecurityScanner {
           email.score >= 80
             ? "safe"
             : email.score >= 50
-            ? "suspected"
-            : "dangerous";
+              ? "suspected"
+              : "dangerous";
         const senderDisplay = this.truncateText(email.sender, 25);
         const subjectDisplay = this.truncateText(email.subject, 30);
 
@@ -584,6 +584,12 @@ class EmailSecurityScanner {
     this.isScanning = false;
     this.updatePanelUI();
     this.updatePopupData();
+
+    // 🔍 DEBUG: Log all scanned emails
+    console.log(
+      "🧪 ALL SCANNED EMAILS:",
+      Array.from(this.scannedEmails.values()),
+    );
   }
 
   /**
@@ -599,6 +605,7 @@ class EmailSecurityScanner {
       emailElements.forEach((element, index) => {
         try {
           const emailData = this.parseEmailElement(element, selector, index);
+          // console.log("Parsed emailData:", emailData);
           if (emailData && !this.scannedEmails.has(emailData.id)) {
             emails.push(emailData);
           }
@@ -607,8 +614,41 @@ class EmailSecurityScanner {
         }
       });
     });
-
+    console.log(emails);
     return emails;
+  }
+
+  detectOpenedEmail() {
+    const bodyEl = document.querySelector("div.a3s");
+    const subjectEl =
+      document.querySelector("h2.hP") || document.querySelector("h2");
+
+    const senderEl = document.querySelector("span.gD");
+
+    if (!subjectEl || !senderEl || !bodyEl) return;
+
+    const subject = subjectEl.innerText.trim();
+    const sender = senderEl.getAttribute("email") || senderEl.innerText.trim();
+    const body = bodyEl.innerText.trim();
+
+    const timestamp = new Date().toISOString();
+    const id = this.generateEmailId(sender, subject, timestamp);
+
+    if (this.scannedEmails.has(id)) return;
+
+    const emailData = {
+      id,
+      sender,
+      subject,
+      body,
+      timestamp,
+      fullContent: `${subject} ${body}`,
+      element: subjectEl,
+      scanSource: "EMAIL_OPEN",
+    };
+
+    console.log("📖 Opened email detected → sending to backend");
+    this.scanEmail(emailData);
   }
 
   /**
@@ -728,10 +768,12 @@ class EmailSecurityScanner {
         body: emailData.body,
         timestamp: emailData.timestamp,
         fullContent: emailData.fullContent,
+        scanSource: emailData.scanSource || "INBOX_LIST",
       };
 
+      console.log("Payload:", payload);
       console.log(`🔄 Scanning: ${emailData.sender}`);
-
+      console.log("🚀 SENDING TO BACKEND:", JSON.stringify(payload, null, 2));
       const response = await fetch(this.API_ENDPOINT, {
         method: "POST",
         headers: {
@@ -755,6 +797,7 @@ class EmailSecurityScanner {
       };
 
       this.scannedEmails.set(emailData.id, scanResult);
+      console.log("📦 SCANNED EMAIL OBJECT:", scanResult);
       this.applyVisualIndicator(emailData.element, scanResult);
 
       console.log(`✅ Scanned: ${emailData.sender} - Score: ${result.score}`);
@@ -840,7 +883,7 @@ class EmailSecurityScanner {
       "email-safe",
       "email-suspected",
       "email-dangerous",
-      "email-error"
+      "email-error",
     );
 
     let badge = element.querySelector(".security-badge");
@@ -920,6 +963,8 @@ class EmailSecurityScanner {
         if (hasNewEmails && !this.isScanning) {
           this.startScanning();
         }
+
+        this.detectOpenedEmail();
       }, 1500);
     });
 
@@ -983,7 +1028,7 @@ class EmailSecurityScanner {
       averageScore:
         emails.length > 0
           ? Math.round(
-              emails.reduce((sum, e) => sum + e.score, 0) / emails.length
+              emails.reduce((sum, e) => sum + e.score, 0) / emails.length,
             )
           : 0,
     };
